@@ -8,6 +8,7 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
+
 import Colors from "../../constants/Colors";
 
 const AdItem = ({ image, price, title, description, viewDetails }) => {
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     color: Colors.accent,
-    textAlign: "center"
+    textAlign: "center",
   },
 });
 

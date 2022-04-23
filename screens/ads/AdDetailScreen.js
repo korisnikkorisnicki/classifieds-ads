@@ -1,10 +1,39 @@
 import React from "react";
-import { ScrollView, View, Image, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Image, BackHandler, StyleSheet } from "react-native";
+import { CommonActions } from "@react-navigation/native";
 
+import { useEffect } from "react";
 import PRODUCTS from "../../data/dummy-data";
 
-const AdDetailScreen = ({ route }) => {
-  const { id } = route.params;
+const AdDetailScreen = ({ navigation, route }) => {
+  const { id, prevRoute } = route.params;
+
+  const routes = navigation.getState().routes;
+  // const prevRoute = routes[routes.length - 2];
+
+  function handleBackButtonClick() {
+    if (prevRoute === "HomeScreen") {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        })
+      );
+    } else {
+      navigation.goBack();
+    }
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
+      );
+    };
+  }, []);
 
   const product = PRODUCTS.find((item) => item.id === id);
 
