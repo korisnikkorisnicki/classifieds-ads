@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation }) => {
             style={[styles.fixedFilter, styles.filtersItem]}
             horizontal={true}
           >
-            <FilterItem>
+            <FilterItem onPress={() => navigation.navigate('Categories')}>
               <FontAwesome
                 name="folder-open"
                 size={34}

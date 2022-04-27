@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -11,8 +11,19 @@ import {
 
 import Colors from "../../constants/Colors";
 
-const AdItem = ({ image, price, title, description, viewDetails }) => {
+const AdItem = ({
+  image,
+  price,
+  title,
+  description,
+  viewDetails,
+  navigation
+}) => {
   let TouchableCross = TouchableOpacity;
+
+  // useEffect(() => {
+  //   navigation.goBack();
+  // }, []);
 
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableCross = TouchableNativeFeedback;

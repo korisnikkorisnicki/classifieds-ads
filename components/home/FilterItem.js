@@ -4,7 +4,11 @@ import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import Colors from "../../constants/Colors";
 
 const FilterItem = (props) => {
-  return <Pressable style={styles.item}>{props.children}</Pressable>;
+  return (
+    <Pressable style={styles.item} onPress={props.onPress}>
+      {props.children}
+    </Pressable>
+  );
 };
 
 const styles = StyleSheet.create({
