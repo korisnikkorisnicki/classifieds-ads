@@ -1,14 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import AdsOverviewScreen from "../screens/ads/AdsOverviewScreen";
 import AdDetailScreen from "../screens/ads/AdDetailScreen";
 
-import Colors from "../constants/Colors";
-
 const Stack = createStackNavigator();
 
-const AdsNavigator = ({ navigation }) => {
+const AdsNavigator = ({ navigation, safeAreaHandler }) => {
+  const Colors = useSelector((state) => state.ui.colors);
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -25,7 +26,13 @@ const AdsNavigator = ({ navigation }) => {
         component={AdsOverviewScreen}
       />
       <Stack.Screen
-        options={{ header: () => null }}
+        // options={{ header: () => null }}
+        options={{
+          headerTintColor: Colors.accent,
+          headerStyle: {
+            backgroundColor: Colors.primary,
+          },
+        }}
         name="AdDetailScreen"
         component={AdDetailScreen}
       />

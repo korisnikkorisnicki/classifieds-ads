@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
-import { Button, FlatList } from "react-native";
+import React from "react";
+import { useSelector } from "react-redux";
+import { View, FlatList, StyleSheet } from "react-native";
 
 import AdItem from "../../components/ads/AdItem";
 
 import PRODUCTS from "../../data/dummy-data";
 
 const AdsOverviewScreen = ({ navigation }) => {
+  const Colors = useSelector((state) => state.ui.colors);
+
   // const onPressHandler = () => {
   //   navigation.
   // };
@@ -16,8 +19,10 @@ const AdsOverviewScreen = ({ navigation }) => {
   //   });
   // }, []);
 
+  const styles = stylesHandler(Colors);
+
   return (
-    <>
+    <View style={styles.container}>
       <FlatList
         data={PRODUCTS}
         keyExtractor={(item) => item.id}
@@ -35,8 +40,15 @@ const AdsOverviewScreen = ({ navigation }) => {
           />
         )}
       />
-    </>
+    </View>
   );
 };
+
+const stylesHandler = (Colors) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: Colors.stackBackground,
+    },
+  });
 
 export default AdsOverviewScreen;

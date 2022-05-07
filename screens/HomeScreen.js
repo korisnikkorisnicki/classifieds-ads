@@ -5,9 +5,9 @@ import {
   TextInput,
   Pressable,
   ScrollView,
-  BackHandler,
   StyleSheet,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -17,15 +17,19 @@ import { Feather } from "@expo/vector-icons";
 
 import FilterItem from "../components/home/FilterItem";
 
-import Colors from "../constants/Colors";
 import AdItem from "../components/home/AdItem";
+import { BottomTabsNavigatorDimensions } from "../constants/Dimensions";
 import PRODUCTS from "../data/dummy-data";
 
 const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
+  const Colors = useSelector((state) => state.ui.colors);
+  const darkMode = useSelector((state) => state.ui.darkMode);
+
+  const styles = stylesHandler(Colors);
 
   return (
-    <>
+    <View style={styles.container}>
       {/* <Button
         title="RADI"
         onPress={() =>
@@ -51,10 +55,11 @@ const HomeScreen = ({ navigation }) => {
         <TextInput
           style={styles.searchInput}
           placeholder="Search..."
+          placeholderTextColor={Colors.placeholderColor}
           onChangeText={(value) => setSearchText(value)}
         />
         <Pressable style={styles.searchIcon}>
-          <AntDesign name="filter" size={24} color="black" />
+          <AntDesign name="filter" size={24} color={Colors.icon} />
         </Pressable>
       </View>
 
@@ -65,7 +70,7 @@ const HomeScreen = ({ navigation }) => {
             style={[styles.fixedFilter, styles.filtersItem]}
             horizontal={true}
           >
-            <FilterItem onPress={() => navigation.navigate('Categories')}>
+            <FilterItem onPress={() => navigation.navigate("Categories")}>
               <FontAwesome
                 name="folder-open"
                 size={34}
@@ -134,10 +139,22 @@ const HomeScreen = ({ navigation }) => {
 
         <View style={styles.homeInfo}>
           <View>
-            <Text style={styles.homeInfoText}>Latest</Text>
+            <Text
+              style={
+                darkMode === false ? styles.homeInfoText : styles.simpleText
+              }
+            >
+              Latest
+            </Text>
           </View>
           <View>
-            <Text style={styles.homeInfoText}>Yesterday 15, in total 50</Text>
+            <Text
+              style={
+                darkMode === false ? styles.homeInfoText : styles.simpleText
+              }
+            >
+              Yesterday 15, in total 50
+            </Text>
           </View>
         </View>
 
@@ -151,7 +168,7 @@ const HomeScreen = ({ navigation }) => {
               price={product.price}
               description={product.description}
               viewDetails={() => {
-                navigation.navigate("AdsNavigator", {
+                navigation.navigate("Ads", {
                   screen: "AdDetailScreen",
                   params: { id: product.id, prevRoute: "HomeScreen" },
                 });
@@ -160,80 +177,91 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </ScrollView>
       </ScrollView>
-    </>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  search: {
-    marginVertical: 10,
-    marginHorizontal: 20,
-    height: 55,
-    backgroundColor: Colors.primaryLight,
-    flexDirection: "row",
-    borderWidth: 0.5,
-    borderColor: Colors.primary,
-    alignItems: "center",
-    shadowColor: "black",
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  searchInput: {
-    color: "black",
-    flex: 1,
-    borderRightWidth: 1,
-    fontSize: 18,
-  },
-  searchIcon: {
-    paddingHorizontal: 15,
-  },
-  filtersBorder: {
-    borderColor: Colors.accent,
-    marginHorizontal: 10,
-  },
-  filtersContainer: {
-    flexDirection: "row",
-    paddingVertical: 10,
-    alignItems: "center",
-    backgroundColor: Colors.primaryLight,
-  },
-  fixedFilter: {
-    borderRightWidth: 2,
-    borderColor: Colors.accent,
-    paddingHorizontal: 5,
-  },
-  filtersItem: {
-    alignItems: "center",
-  },
-  filtersItemText: {
-    color: Colors.accent,
-  },
-  shiftingFilters: {
-    flex: 1,
-    paddingLeft: 10,
-    paddingVertical: 10,
-  },
-  homeInfo: {
-    // height: 70,
-    backgroundColor: Colors.stackBackground,
-    margin: 10,
-    alignItems: "center",
-    shadowColor: "black",
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingTop: 15,
-    padding: 5,
-    backgroundColor: Colors.primaryLight,
-  },
-  homeInfoText: {
-    color: Colors.primary,
-  },
-});
+const stylesHandler = (Colors) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: Colors.stackBackground,
+    },
+    search: {
+      marginVertical: 10,
+      marginHorizontal: 20,
+      height: 55,
+      backgroundColor: Colors.primaryLight,
+      flexDirection: "row",
+      borderWidth: 0.5,
+      borderColor: Colors.borderColor,
+      alignItems: "center",
+      shadowColor: "black",
+      shadowOpacity: 0.26,
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 8,
+      elevation: 5,
+      backgroundColor: Colors.stackBackground,
+    },
+    searchInput: {
+      color: Colors.simpleText,
+      flex: 1,
+      borderRightWidth: 1,
+      borderColor: Colors.borderColor,
+      fontSize: 18,
+    },
+    searchIcon: {
+      paddingHorizontal: 15,
+    },
+    filtersBorder: {
+      borderColor: Colors.accent,
+      marginHorizontal: 10,
+    },
+    filtersContainer: {
+      flexDirection: "row",
+      paddingVertical: 10,
+      alignItems: "center",
+      backgroundColor: Colors.primaryLight,
+    },
+    fixedFilter: {
+      borderRightWidth: 2,
+      borderColor: Colors.accent,
+      paddingHorizontal: 5,
+    },
+    filtersItem: {
+      alignItems: "center",
+    },
+    filtersItemText: {
+      color: Colors.accent,
+    },
+    shiftingFilters: {
+      flex: 1,
+      paddingVertical: 10,
+    },
+    homeInfo: {
+      // height: 70,
+      backgroundColor: Colors.stackBackground,
+      margin: 10,
+      alignItems: "center",
+      shadowColor: "black",
+      shadowOpacity: 0.26,
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 8,
+      elevation: 5,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      paddingTop: 15,
+      padding: 5,
+      backgroundColor: Colors.primaryLight,
+    },
+    homeInfoText: {
+      color: Colors.primary,
+    },
+    simpleText: {
+      color: Colors.simpleText,
+    },
+    homeAd: {
+      paddingBottom: BottomTabsNavigatorDimensions.paddingBottomOfFirstAdjacent,
+    },
+  });
 
 export default HomeScreen;
